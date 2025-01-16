@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ATOSS++
 // @namespace    http://tampermonkey.net/
-// @version      1.2.0
+// @version      1.3.0
 // @description  fixes stuff atoss is too dumb to fix themselves
 // @updateURL   https://raw.githubusercontent.com/ArbeitsAccount/ATOSS-/refs/heads/main/main.js
 // @downloadURL https://raw.githubusercontent.com/ArbeitsAccount/ATOSS-/refs/heads/main/main.js
