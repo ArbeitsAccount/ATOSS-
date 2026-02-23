@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ATOSS++
 // @namespace    http://tampermonkey.net/
-// @version      2.1.3
+// @version      2.1.4
 // @description  fixes stuff atoss is too dumb to fix themselves
 // @updateURL   https://raw.githubusercontent.com/ArbeitsAccount/ATOSS-/refs/heads/main/main.js
 // @downloadURL https://raw.githubusercontent.com/ArbeitsAccount/ATOSS-/refs/heads/main/main.js
@@ -31,9 +31,9 @@
                 }
             }
         });
-        if (!timer) {
-            const sub = document.querySelector('.modal-header-subtitle');
-            if (sub) {
+        const sub = document.querySelector('.modal-header-subtitle');
+        if (sub) {
+            if (sub.innerHTML == "Stempeln Sie hier Ihr Kommen &amp; Gehen.") {
                 const tick = () => sub.textContent = 'Sekunden bis zur nächsten Minute: ' + (59 - new Date().getSeconds());
                 tick();
                 timer = setInterval(tick, 1000);
