@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ATOSS++
 // @namespace    http://tampermonkey.net/
-// @version      2.1.5
+// @version      2.1.6
 // @description  fixes stuff atoss is too dumb to fix themselves
 // @updateURL   https://raw.githubusercontent.com/ArbeitsAccount/ATOSS-/refs/heads/main/main.js
 // @downloadURL https://raw.githubusercontent.com/ArbeitsAccount/ATOSS-/refs/heads/main/main.js
@@ -53,5 +53,5 @@
                 ucg.style.backgroundPosition = entries[0].contentRect.width < 940 ? 'left bottom' : 'right bottom';
             }).observe(ucg);
         }
-    }).observe(document.body, { childList: true});
+    }).observe(document.body, {childList: true, subtree: true});
 })();
