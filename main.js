@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         ATOSS++
 // @namespace    http://tampermonkey.net/
-// @version      2.1.6
+// @version      2.1.7
 // @description  fixes stuff atoss is too dumb to fix themselves
 // @updateURL   https://raw.githubusercontent.com/ArbeitsAccount/ATOSS-/refs/heads/main/main.js
 // @downloadURL https://raw.githubusercontent.com/ArbeitsAccount/ATOSS-/refs/heads/main/main.js
@@ -12,13 +12,13 @@
 // @grant        GM_getValue
 // ==/UserScript==
 
-
-
 (function () {
     document.head.insertAdjacentHTML('beforeend', '<style>@media (max-width: 1099px) { [data-test="ws-use-case-group-container"][data-styled="1"] { background-position: left bottom !important; } }</style>');
     const targets = ['Anwesenheitsbeginn stempeln', 'Pause / Anwesenheitsende stempeln'];
     let timer;
-    new MutationObserver(() => {
+
+    // Added (mutations, obs) parameters so we can reference the observer itself
+    new MutationObserver((mutations, obs) => {
         document.querySelectorAll('button[data-test="ws-info-button"]').forEach(btn => {
             if (targets.includes(btn.getAttribute('aria-label'))) {
                 if (btn.classList.contains('highlighted')) {
@@ -32,14 +32,25 @@
                 }
             }
         });
+
         const sub = document.querySelector('.modal-header-subtitle');
         if (sub) {
             if (sub.innerHTML == "Stempeln Sie hier Ihr Kommen &amp; Gehen.") {
-                const tick = () => sub.textContent = 'Sekunden bis zur nächsten Minute: ' + (59 - new Date().getSeconds());
+                clearInterval(timer);
+
+                const tick = () => {
+                    if (!sub.isConnected) return clearInterval(timer);
+
+                    obs.disconnect();
+                    sub.textContent = 'Sekunden bis zur nächsten Minute: ' + (59 - new Date().getSeconds());
+                    obs.observe(document.body, {childList: true, subtree: true});
+                };
+
                 tick();
                 timer = setInterval(tick, 1000);
             }
         }
+
         const ucg = document.querySelector('[data-test="ws-use-case-group-container"]');
         if (ucg && !ucg.dataset.styled) {
             ucg.dataset.styled = '1';
